@@ -5,7 +5,6 @@
   "ompilotRuntimeUpdates": {
     "indexUrl": "https://github.com/pikez/ompilot-runtime/releases/latest/download/runtime-index.json",
     "trustedKeys": [
-      "MCowBQYDK2VwAyEAtEyrVDlIWAmcvA48MUefmGhqh3rSLMux+gLl8knBgtI=",
       "MCowBQYDK2VwAyEACLf0GKcRoQD76/yQb3EVrzTa9Db+tcJ0SGmH9ocjahE="
     ]
   },

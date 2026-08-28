@@ -240,7 +240,10 @@ try {
       '--latest'
     ])
 
-    const publishedReleases = await readPublishedReleases(indexUrl, trustedKeys)
+    const publishedReleases = await readPublishedReleases(
+      `${artifactBaseUrl}/runtime-index.json`,
+      trustedKeys
+    )
     if (!publishedReleases.some((release) => object(release)?.id === runtimeId)) {
       throw new Error('Published latest Runtime index does not contain the new release')
     }
