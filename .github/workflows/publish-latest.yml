@@ -1,0 +1,50 @@
+name: Publish latest OMP Runtime
+
+on:
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Publish even when this SDK version already exists
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-omp-runtime
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: macos-15
+    timeout-minutes: 45
+    env:
+      OMPILOT_RUNTIME_SIGNING_KEY: ${{ secrets.OMPILOT_RUNTIME_SIGNING_KEY }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Bun
+        run: node scripts/ensure-bun.mjs
+
+      - name: Publish latest Runtime
+        env:
+          FORCE_RELEASE: ${{ inputs.force }}
+        run: |
+          args=()
+          if [[ "$FORCE_RELEASE" == "true" ]]; then
+            args+=(--force)
+          fi
+          npm run runtime:publish-latest -- "${args[@]}"
